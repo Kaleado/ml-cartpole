@@ -6,7 +6,6 @@ import random
 from collections import deque
 
 # Set up OpenAI gym environment
-ENV_NAME = 'Pendulum-v0'
+ENV_NAME = 'CartPole-v0'
 env = gym.make(ENV_NAME)
-
 

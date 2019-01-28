@@ -17,13 +17,23 @@ ACTION_DIM = env.action_space.n
 
 # We create a two-layer network, consisting only of fully-connected layers.
 # These will be predicting our Q-values.
-state_input = tf.placeholder("float", [None, STATE_DIM])
 model = Sequential()
-model.add(InputLayer(input_tensor=state_input))
-model.add(Dense(32, activation='tanh'))
+model.add(Dense(64, activation='tanh', input_shape=(STATE_DIM,)))
 model.add(Dense(ACTION_DIM, activation='sigmoid'))
 
 # Define our loss and optimiser functions.
 model.compile(loss='mse', optimizer='adam', metrics=['mae'])
 
 # We get the Q-value of our desired action.
+
+# Function to determine the next action to take.
+def get_action(state, epsilon):
+    if(np.random.random() > epsilon):
+        action = np.argmax(model.predict(state))
+    else:
+        action = np.random.random_integers(0, ACTION_DIM)
+    return action
+
+initial_state = env.reset().reshape((1, STATE_DIM))
+print(STATE_DIM, initial_state.shape)
+print(get_action(initial_state, 0.0))
